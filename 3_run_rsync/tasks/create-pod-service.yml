@@ -151,6 +151,7 @@
   k8s:
     state: absent
     definition: "{{ lookup('template', 'pod.yml.j2') }}"
+  when: cleanup_resources
 
 - name: "Wait for pod to be deleted"
   k8s_info:
@@ -162,11 +163,13 @@
   until: "{{ p.resources | length == 0 }}"
   retries: "{{ transfer_pod_delete_wait_retries }}"
   delay: 3
+  when: cleanup_resources
 
 - name: "Cleanup the service for rsync"
   k8s:
     state: absent
     definition: "{{ lookup('template', 'svc.yml.j2') }}"
+  when: cleanup_resources
 
 - name: "Wait for service to be deleted"
   k8s_info:
@@ -178,16 +181,19 @@
   until: "{{ s.resources | length == 0 }}"
   retries: "{{ transfer_svc_delete_wait_retries }}"
   delay: 3
+  when: cleanup_resources
 
 - name: "Cleanup the configmap for rsyncd"
   k8s:
     state: absent
     definition: "{{ lookup('template', 'rsyncd.yml.j2') }}"
+  when: cleanup_resources
 
 - name: "Cleanup the configmap for stunnel"
   k8s:
     state: absent
     definition: "{{ lookup('template', 'stunnel.yml.j2') }}"
+  when: cleanup_resources
 
 - name: "Printing failed / succeded pvcs"
   debug:

@@ -13,6 +13,8 @@ mig_dest_ssh_user: root # note: image above has been designed to work with login
 stunnel_cert_filepath: "./files/tls.crt"
 stunnel_key_filepath: "./files/tls.key"
 
+cleanup_resources: true
+
 rsyncd_port:  22
 
 stunnel_port: 2222
